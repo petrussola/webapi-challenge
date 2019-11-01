@@ -29,6 +29,18 @@ router.get("/:id", validateActionId, (req, res) => {
 
 // POST
 
+router.post("/", validateAction, (req, res) => {
+  Actions.insert(req.body)
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: `There was an error posting the action: ${error.message}`
+      });
+    });
+});
+
 // DELETE
 
 // PUT
@@ -53,6 +65,22 @@ function validateActionId(req, res, next) {
         message: `There was an error retrieving action ${id}: ${error.message}`
       });
     });
+}
+
+function validateAction(req, res, next) {
+  if (Object.keys(req.body).length) {
+    if (req.body.project_id && req.body.description && req.body.notes) {
+      next();
+    } else {
+      res
+        .status(400)
+        .json({ message: "Project id, description and name required" });
+    }
+  } else {
+    res
+      .status(400)
+      .json({ message: "Project id, description and name required" });
+  }
 }
 
 module.exports = router;
