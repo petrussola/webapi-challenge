@@ -43,6 +43,18 @@ router.post("/", validateAction, (req, res) => {
 
 // DELETE
 
+router.delete("/:id", validateActionId, (req, res) => {
+  Actions.remove(req.data.id)
+    .then(data => {
+      res.status(200).json(req.data)
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: `Action ${req.data.id} could not be deleted: ${error.message}`
+          });
+    });
+});
+
 // PUT
 
 // MIDDLEWARE
