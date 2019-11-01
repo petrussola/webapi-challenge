@@ -80,12 +80,6 @@ router.put("/:id", [validateProjectId, validateProject], (req, res) => {
     });
 });
 
-// CATCHALL
-
-router.get("/", (req, res) => {
-  res.status(200).json({ message: "hello from server" });
-});
-
 // MIDDLEWARE
 
 function validateProjectId(req, res, next) {
