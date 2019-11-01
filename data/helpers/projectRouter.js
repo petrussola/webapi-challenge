@@ -7,6 +7,8 @@ const router = express.Router();
 
 // ENDPOINTS
 
+// GET
+
 router.get("/", (req, res) => {
   Projects.get()
     .then(data => {
@@ -35,6 +37,8 @@ router.get("/:id/actions", validateProjectId, (req, res) => {
     });
 });
 
+// POST
+
 router.post("/", validateProject, (req, res) => {
   Projects.insert(req.body)
     .then(data => {
@@ -46,6 +50,23 @@ router.post("/", validateProject, (req, res) => {
       });
     });
 });
+
+// DELETE
+router.delete("/:id", validateProjectId, (req, res) => {
+  Projects.remove(req.data.id)
+    .then(data => {
+      res.status(200).json(req.data);
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({
+          message: `Project ${req.data.id} could not be deleted: ${error.message}`
+        });
+    });
+});
+
+// PUT
 
 router.get("/", (req, res) => {
   res.status(200).json({ message: "hello from server" });
