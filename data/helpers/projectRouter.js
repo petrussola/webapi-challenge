@@ -23,6 +23,18 @@ router.get("/:id", validateProjectId, (req, res) => {
   res.status(200).json(req.data);
 });
 
+router.get("/:id/actions", validateProjectId, (req, res) => {
+  Projects.getProjectActions(req.data.id)
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(error => {
+      res
+        .status(400)
+        .json({ message: `Could not retrieve actions: ${error.message}` });
+    });
+});
+
 router.post("/", validateProject, (req, res) => {
   Projects.insert(req.body)
     .then(data => {
